@@ -1,0 +1,24 @@
+{% block body %}
+{% load crispy_forms_tags %}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h3>Ürün Güncelle</h3>
+        <hr>
+        <form 
+         <form method = "post" enctype="multipart/form-data" >
+
+            {% csrf_token %}
+            {{form|crispy}}
+            <br>
+            <button type = "submit" class = "btn btn-danger">Ürün Güncelle</button>
+        </form>
+    </div>
+  </div>
+
+
+{% endblock body %}
+
+
+
+        

@@ -1,0 +1,15 @@
+<html>
+    <div>
+        {% for item in products %}
+        <li>
+            {{item.name}}    
+            {{item.manufacturer.name}}    
+        </li>
+        
+        <form action="{% url 'product:product_delete' id=item.id %}" method=post>
+            {% csrf_token %}
+            <input type=submit value="Sil" />
+        </form>
+        {% endfor %}
+    </div>
+</html>
