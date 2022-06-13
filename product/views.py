@@ -1,7 +1,4 @@
-from math import prod
-
 from django.contrib import messages
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from product.forms import ProductForm
@@ -14,7 +11,7 @@ def product_list(request):
         return render(request, "product_list.html", {"products": products})
 
     else:
-        return redirect("/list")
+        return redirect("/create")
 
 
 def product_create(request):
