@@ -14,7 +14,7 @@ def product_list(request):
         return render(request, "product_list.html", {"products": products})
 
     else:
-        return HttpResponse("<b>hoşgeldin, kayıt eklemek için tıkla </b>")
+        return redirect("/list")
 
 
 def product_create(request):
