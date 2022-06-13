@@ -16,14 +16,11 @@ def product_list(request):
 
 def product_create(request):
     form = ProductForm(request.POST or None)
-    context = {
-        "form": form,
-    }
+
     if form.is_valid():
         form.save()
         return redirect("/list")
-
-    return render(request, "product_create.html", context)
+    return render(request, "product_create.html", {"form": form})
 
 
 def product_detail(request, id):
