@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "product",
     "crispy_forms",
-]
+    "rest_framework",]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

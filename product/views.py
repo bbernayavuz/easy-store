@@ -1,10 +1,10 @@
-from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
-
-from product.forms import ProductForm
-from product.models import *
+from rest_framework import viewsets
+from .models import Product
+from .serializers import ProductSerializer
 
 
+
+<<<<<<< HEAD
 def product_list(request):
     products = Product.objects.all()
     if products:
@@ -43,3 +43,8 @@ def product_delete(request, id):
     product.delete()
     messages.success(request, "Ürün başarıyla silindi")
     return redirect("/list")
+=======
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all().order_by("name")
+    serializer_class = ProductSerializer    
+>>>>>>> 0925a05c98cb76ef4af3c1a3ba79d5917b0a2e22

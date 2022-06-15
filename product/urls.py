@@ -1,12 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-from product.views import *
+from . import views
 
-app_name = "product"
+routers = routers.DefaultRouter()
+routers.register('', views.ProductViewSet)  
 
 urlpatterns = [
-    path("list/", product_list, name="product_list"),
-    path("create/", product_create, name="product_create"),
-    path("update/<int:id>", product_update, name="product_update"),
-    path("delete/<int:id>", product_delete, name="product_delete"),
+    path('', include(routers.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
