@@ -2,5 +2,13 @@
 <form action="{% url 'product:product_create' %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
+
+    {% comment %}
+    {% for category in categories%}
+     {{ category.name }}
+    {% endfor %}
+    
+    {% endcomment %}
+    
     <input type="submit" value="Submit">
 </form>
