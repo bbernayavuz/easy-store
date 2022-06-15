@@ -16,7 +16,6 @@ def product_list(request):
 
 def product_create(request):
     form = ProductForm(request.POST or None)
-
     if form.is_valid():
         form.save()
         return redirect("/list")

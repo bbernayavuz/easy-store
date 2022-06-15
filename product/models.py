@@ -25,7 +25,7 @@ class Category(models.Model):
 class Product(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=120)
-    slug = models.CharField(max_length=120)
+    slug = models.CharField(max_length=120, unique=True)
     price = models.FloatField()
     quantity = models.IntegerField()
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.PROTECT, null=True)
