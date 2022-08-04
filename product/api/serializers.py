@@ -1,20 +1,47 @@
+from re import A
+from unicodedata import category
+
 from pyexpat import model
 from rest_framework import serializers
 
-from product.models import Manufacturer, Product
+from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage
 
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manufacturer
-        fields = "__all__"s
+        fields = "__all__"
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        # fields = "__all__"
+        exclude = ["product"]
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = "__all__"
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    manufacturers = ManufacturerSerializer(many=True, read_only=True)
+    manufacturer = ManufacturerSerializer(read_only=True, many=False)
+    category = CategorySerializer(read_only=True, many=True)
+
     class Meta:
         model = Product
         fields = "__all__"
 
 
-
+class ProductCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategory
+        fields = "__all__"

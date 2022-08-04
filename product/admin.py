@@ -1,4 +1,6 @@
 from django.contrib import admin
+from product.models import Category, Product
+
 
 from product.models import Category, Product
 

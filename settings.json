@@ -1,0 +1,36 @@
+{
+    "python.linting.enabled": true,
+    "python.analysis.typeCheckingMode": "strict",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportUnknownMemberType": "none",
+        "reportUnknownVariableType": "none",
+        "reportUnknownArgumentType": "none"
+    },
+    "autoDocstring.docstringFormat": "google",
+    "editor.rulers": [
+        {
+            "column": 88,
+            "color": "#444444"
+        },
+        {
+            "column": 120,
+            "color": "#800000"
+        }
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": ["--line-length", "120"],
+    "python.sortImports.args": [
+        "--src=${workspaceFolder}",
+        "--profile=black",
+        "--line-length",
+        "120"
+    ],
+    "python.linting.mypyEnabled": true
+}
