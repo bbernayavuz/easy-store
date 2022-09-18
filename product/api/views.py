@@ -24,22 +24,26 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-
-
-class ImageListCreateAPIView(generics.ListCreateAPIView):
-    queryset = ProductImage.objects.all()
-    serializer_class = ImageSerializer
+# class ImageListCreateAPIView(generics.ListCreateAPIView):
+#     queryset = ProductImage.objects.all()
+#     serializer_class = ImageSerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated,)
 
 
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_url_kwarg = "product_pk"
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class ProductImageCreateAPIView(generics.CreateAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         product_pk = self.kwargs.get("product_pk")
@@ -50,16 +54,38 @@ class ProductImageCreateAPIView(generics.CreateAPIView):
 class ManufacturerListCreateAPIView(generics.ListCreateAPIView):
     queryset = Manufacturer.objects.all()
     serializer_class = ManufacturerSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
+class ManufacturerDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_url_kwarg = "manufacturer_pk"
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
+class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_url_kwarg = "category_pk"
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class ProfileListCreateAPIView(generics.ListCreateAPIView):

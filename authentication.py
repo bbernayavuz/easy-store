@@ -1,3 +1,4 @@
+# csrf zorunluluğunu kaldırıyoruz. 
 from rest_framework.authentication import SessionAuthentication
 
 

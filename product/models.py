@@ -18,6 +18,27 @@ class Manufacturer(models.Model):
         return self.name
 
 
+
+class Product(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=120)
+    slug = models.CharField(max_length=120, unique=True)
+    price = models.FloatField()
+    quantity = models.IntegerField()
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.PROTECT, null=True)
+    category = models.ManyToManyField("Category", through="ProductCategory")
+    image = models.ManyToManyField("ProductImage")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Product, self).save(*args, **kwargs)
+
+
 class Category(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=120)
@@ -30,24 +51,6 @@ class Category(models.Model):
         return self.name
 
 
-class Product(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=120)
-    slug = models.CharField(max_length=120, unique=True)
-    price = models.FloatField()
-    quantity = models.IntegerField()
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.PROTECT, null=True)
-    category = models.ManyToManyField(Category, through="ProductCategory")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Product, self).save(*args, **kwargs)
-
 
 class ProductCategory(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -57,7 +60,7 @@ class ProductCategory(models.Model):
 
 class ProductImage(models.Model):
     image_id = models.BigAutoField(primary_key=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE)
     source = models.CharField(max_length=255)
     extension = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)

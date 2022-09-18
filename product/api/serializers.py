@@ -15,11 +15,12 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = ProductImage
-        # fields = "__all__"
-        exclude = ["product"]
-
+        fields = "__all__"
+        # exclude = ["product"]
+# 
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,6 +31,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     manufacturer = ManufacturerSerializer(read_only=True, many=False)
     category = CategorySerializer(read_only=True, many=True)
+    image = ImageSerializer(read_only=True, many=True)
 
     class Meta:
         model = Product
