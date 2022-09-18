@@ -1,6 +1,5 @@
 from rest_framework import generics
 from rest_framework.generics import GenericAPIView, get_object_or_404
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework import permissions
 from product.api.permissions import IsAdminUserOrReadOnly
 
@@ -11,14 +10,20 @@ from product.api.serializers import (
     ProductCategorySerializer,
     ProductImageSerializer,
     ProductSerializer,
+    ProfileSerializer,
 )
-from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage
+from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage, Profile
 
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes =  [IsAdminUserOrReadOnly]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+
 
 
 class ImageListCreateAPIView(generics.ListCreateAPIView):
@@ -55,6 +60,13 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
 class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
+
+
+class ProfileListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes =  [IsAdminUserOrReadOnly]
+
 
 
 # 1

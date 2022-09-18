@@ -40,22 +40,27 @@ INSTALLED_APPS = [
     "product.apps.ProductConfig",
     "crispy_forms",
     "rest_framework",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
     "django_extensions",  # shell plus için
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+    'users',
 ]
 
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    # "DEFAULT_PERMISSION_CLASSES": [
-    #     "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
-    #     ]
-}
+SITE_ID = 1
+
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -134,3 +139,35 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+REST_FRAMEWORK = {
+     # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    # "DEFAULT_PERMISSION_CLASSES": "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
+
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'authentication.SessionCsrfExemptAuthentication', # csrf zorunluluğunu kaldırıyoruz. 
+        # 'rest_framework.authentication.SessionAuthentication', 
+        'rest_framework.authentication.TokenAuthentication',
+        # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser'
+   ),
+}
+
+
+# REST_USE_JWT = True
+
+# JWT_AUTH_COOKIE = 'my-app-auth'
+# JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+
+
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'

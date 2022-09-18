@@ -1,9 +1,10 @@
-from unicodedata import category
-
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
+from product.enums import Gender
 
 # from django.utils.timezone import datetime
+
 
 
 class Manufacturer(models.Model):
@@ -63,3 +64,14 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.image_id
+
+
+
+class Profile(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=255, choices=Gender.choices())
+
+    # def __str__(self):
+    #     return self.username
+

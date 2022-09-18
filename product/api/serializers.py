@@ -1,11 +1,6 @@
-from re import A
-from unicodedata import category
-
-from pyexpat import model
 from rest_framework import serializers
 
-from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage
-
+from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage, Profile
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,4 +39,10 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCategory
+        fields = "__all__"
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
         fields = "__all__"

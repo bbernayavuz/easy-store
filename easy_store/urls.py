@@ -22,5 +22,10 @@ from product.api.urls import *
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("product.api.urls")),
-    path("api-auth/", include('rest_framework.urls')),
+    path("api-auth/", include('rest_framework.urls')), # Browsable api için
+    # path("api/rest-auth/", include('dj_rest_auth.urls')), # django-rest-auth ile gelen endpointler için
+    path('dj-rest-auth/', include('dj_rest_auth.urls')), # dokumantasyondaki kod   
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    
 ]
+

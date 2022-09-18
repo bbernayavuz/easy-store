@@ -11,6 +11,8 @@ urlpatterns = [
     path("manufacturer/", api_views.ManufacturerListCreateAPIView.as_view(), name="manufacturer-list"),
     path("category/", api_views.CategoryListCreateAPIView.as_view(), name="category-list"),
     path("product-category/", api_views.ProductCategoryListCreateAPIView.as_view(), name="product-category-list"),
+    path("profile/", api_views.ProfileListCreateAPIView.as_view(), name="profile-list"),
+
 ]
 
 
