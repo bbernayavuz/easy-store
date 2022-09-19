@@ -16,8 +16,14 @@ class Gender(Enum):
         return tuple((i.name, i.value) for i in cls)
 
 
+class UserType(Enum):
+    REGISTERED = 0
+    NOTREGISTERED = 1
 
 
+    @classmethod
+    def choices(cls):
+        return tuple((i.name, i.value) for i in cls)
 
 
 

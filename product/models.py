@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
-from product.enums import Gender
+from product.enums import Gender, UserType
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 # from django.utils.timezone import datetime
 
@@ -70,11 +72,12 @@ class ProductImage(models.Model):
 
 
 
-class Profile(models.Model):
+class Customer(models.Model):
     id = models.BigAutoField(primary_key=True)
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
-    gender = models.CharField(max_length=255, choices=Gender.choices())
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=255, choices=Gender.choices(),null=False, blank=True)
+    phone_number = PhoneNumberField(null=True)
+    user_type = models.CharField(max_length=255,choices=UserType.choices(), blank=True)
 
-    # def __str__(self):
-    #     return self.username
-
+    def __str__(self):
+        return self.username

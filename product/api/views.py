@@ -10,9 +10,9 @@ from product.api.serializers import (
     ProductCategorySerializer,
     ProductImageSerializer,
     ProductSerializer,
-    ProfileSerializer,
+    CustomerSerializer,
 )
-from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage, Profile
+from product.models import Category, Customer, Manufacturer, Product, ProductCategory, ProductImage, Customer
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -88,9 +88,10 @@ class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-class ProfileListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+class CustomerListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    authentication_classes = (TokenAuthentication,)
     permission_classes =  [IsAdminUserOrReadOnly]
 
 
