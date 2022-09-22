@@ -74,7 +74,7 @@ class ProductImage(models.Model):
 
 class Customer(models.Model):
     id = models.BigAutoField(primary_key=True)
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(max_length=255, choices=Gender.choices(),null=False, blank=True)
     phone_number = PhoneNumberField(null=True)
     user_type = models.CharField(max_length=255,choices=UserType.choices(), blank=True)

@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework import permissions
-from product.api.permissions import IsAdminUserOrReadOnly
+from product.api.permissions import IsAdminUserOrReadOnly, IsOwnUserOrReadOnly
 
 from product.api.serializers import (
     CategorySerializer,
@@ -16,12 +16,24 @@ from product.models import Category, Customer, Manufacturer, Product, ProductCat
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins
 
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+
+
+class ProductViewSet(
+                    mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.ListModelMixin,
+                    GenericViewSet):
+
+    lookup_url_kwarg = "product_pk"
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+
 
 
 # class ImageListCreateAPIView(generics.ListCreateAPIView):
@@ -31,12 +43,12 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 #     permission_classes = (IsAuthenticated,)
 
 
-class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_url_kwarg = "product_pk"
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+# class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     lookup_url_kwarg = "product_pk"
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated,)
 
 
 class ProductImageCreateAPIView(generics.CreateAPIView):
@@ -92,7 +104,10 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes =  [IsAdminUserOrReadOnly]
+    permission_classes =  [IsAdminUserOrReadOnly,]
+
+ 
+
 
 
 
