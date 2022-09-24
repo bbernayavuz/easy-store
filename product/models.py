@@ -80,4 +80,4 @@ class Customer(models.Model):
     user_type = models.CharField(max_length=255,choices=UserType.choices(), blank=True)
 
     def __str__(self):
-        return self.username
+        return self.user.username

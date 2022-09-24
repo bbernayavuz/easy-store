@@ -16,7 +16,7 @@ from product.models import Category, Customer, Manufacturer, Product, ProductCat
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework import mixins
 
 
@@ -35,22 +35,6 @@ class ProductViewSet(
     permission_classes = (IsAuthenticated,)
 
 
-
-# class ImageListCreateAPIView(generics.ListCreateAPIView):
-#     queryset = ProductImage.objects.all()
-#     serializer_class = ImageSerializer
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (IsAuthenticated,)
-
-
-# class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-#     lookup_url_kwarg = "product_pk"
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (IsAuthenticated,)
-
-
 class ProductImageCreateAPIView(generics.CreateAPIView):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
@@ -63,14 +47,7 @@ class ProductImageCreateAPIView(generics.CreateAPIView):
         serializer.save(product=product)
 
 
-class ManufacturerListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Manufacturer.objects.all()
-    serializer_class = ManufacturerSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-
-
-class ManufacturerDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+class ManufacturerViewSet(ModelViewSet):
     lookup_url_kwarg = "manufacturer_pk"
     queryset = Manufacturer.objects.all()
     serializer_class = ManufacturerSerializer
@@ -78,14 +55,11 @@ class ManufacturerDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-class CategoryListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-
-
-class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+class CategoryAPIView(mixins.CreateModelMixin,
+                                mixins.RetrieveModelMixin,
+                                mixins.UpdateModelMixin,
+                                mixins.ListModelMixin,
+                                GenericViewSet):
     lookup_url_kwarg = "category_pk"
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -106,24 +80,3 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes =  [IsAdminUserOrReadOnly,]
 
- 
-
-
-
-
-# 1
-# class ProductViewSet(viewsets.ModelViewSet):
-#      queryset = Product.objects.all().order_by("name")
-#      serializer_class = ProductSerializer
-
-
-# class ProductListCreateAPIView(ListModelMixin, CreateModelMixin, GenericAPIView):
-
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
