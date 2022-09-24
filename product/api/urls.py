@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register(r'product', api_views.ProductViewSet)
 router.register(r'manufacturer', api_views.ManufacturerViewSet)
 router.register(r'category', api_views.CategoryAPIView)
+router.register(r'customer', api_views.CustomerAPIView, basename='customer')
 
 
 urlpatterns = [
@@ -20,6 +21,5 @@ urlpatterns = [
     # path("category/", api_views.CategoryListCreateAPIView.as_view(), name="category-list"),
     # path("category/<int:category_pk>", api_views.CategoryDetailAPIView.as_view(), name="category-detail"),
     path("product-category/", api_views.ProductCategoryListCreateAPIView.as_view(), name="product-category-list"),
-    path("customer/", api_views.CustomerListCreateAPIView.as_view(), name="customer-list"),
 
 ]

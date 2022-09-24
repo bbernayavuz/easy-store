@@ -18,6 +18,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework import mixins
+from rest_framework.filters import SearchFilter
 
 
 
@@ -33,6 +34,9 @@ class ProductViewSet(
     serializer_class = ProductSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+    filter_backends=[SearchFilter] # birden fazla seçenek eklenebilir
+    search_fields=['name'] #product modelinden birden fazla seçenek eklenebilir
+
 
 
 class ProductImageCreateAPIView(generics.CreateAPIView):
@@ -74,9 +78,20 @@ class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-class CustomerListCreateAPIView(generics.ListCreateAPIView):
+class CustomerAPIView(mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.ListModelMixin,
+                        GenericViewSet):
+                            
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes =  [IsAdminUserOrReadOnly,]
 
+    def get_queryset(self):
+        queryset = Customer.objects.all()
+        username= self.request.query_params.get('username', None)
+        if username is not None:
+            queryset=queryset.filter(user__username=username)
+        return queryset
