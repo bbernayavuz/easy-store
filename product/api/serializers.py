@@ -15,7 +15,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = ProductImage
         fields = "__all__"
@@ -29,7 +28,11 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    manufacturer = ManufacturerSerializer(read_only=True, many=False)
+    # manufacturer = ManufacturerSerializer(read_only=True, many=False) #cevapta manufacturer serializerdaki tüm bilgileri verir.
+    manufacturer = serializers.StringRelatedField() # cevapta manufacturer name'ini verir.
+                                                    # Manufacturer modelde dönen değeri verir  
+                                                    # Ama product oluşturulurken yine manufacturer id verilmelidir.
+    # manufacturer ile ilgili hiçbir şey yazılmazsa id döner.
     category = CategorySerializer(read_only=True, many=True)
     image = ImageSerializer(read_only=True, many=True)
 
