@@ -1,9 +1,9 @@
 from rest_framework import generics
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework import permissions
-from product.api.permissions import IsAdminUserOrReadOnly, IsOwnUserOrReadOnly
+from api.permissions import IsAdminUserOrReadOnly, IsOwnUserOrReadOnly
 
-from product.api.serializers import (
+from api.serializers import (
     CategorySerializer,
     ImageSerializer,
     ManufacturerSerializer,

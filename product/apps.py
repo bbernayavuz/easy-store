@@ -9,4 +9,4 @@ class ProductConfig(AppConfig):
 # en üstten import etmek yerine ready kullanılıyor.
 
     def ready(self):
-        import product.api.signals
+        import api.signals

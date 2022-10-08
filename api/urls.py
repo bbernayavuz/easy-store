@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from product.api import views as api_views
+from product import views as api_views
 
 router = DefaultRouter()
 router.register(r'product', api_views.ProductViewSet)
