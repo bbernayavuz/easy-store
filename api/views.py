@@ -11,8 +11,10 @@ from api.serializers import (
     ProductImageSerializer,
     ProductSerializer,
     CustomerSerializer,
+    OrderSerializer,
 )
 from product.models import Category, Customer, Manufacturer, Product, ProductCategory, ProductImage, Customer
+from order.models import Order,OrderItem
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -59,7 +61,7 @@ class ManufacturerViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
 
-class CategoryAPIView(mixins.CreateModelMixin,
+class CategoryViewSet(mixins.CreateModelMixin,
                                 mixins.RetrieveModelMixin,
                                 mixins.UpdateModelMixin,
                                 mixins.ListModelMixin,
@@ -78,7 +80,7 @@ class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-class CustomerAPIView(mixins.CreateModelMixin,
+class CustomerViewSet(mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         mixins.ListModelMixin,
@@ -95,3 +97,18 @@ class CustomerAPIView(mixins.CreateModelMixin,
         if username is not None:
             queryset=queryset.filter(user__username=username)
         return queryset
+
+
+
+class OrderViewSet( mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.ListModelMixin,
+                    GenericViewSet):
+
+    lookup_url_kwarg = "order_pk"
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    filter_backends=[SearchFilter] # birden fazla seçenek eklenebilir

@@ -26,7 +26,7 @@ class Product(models.Model):
     name = models.CharField(max_length=120)
     slug = models.CharField(max_length=120, unique=True)
     price = models.FloatField()
-    quantity = models.IntegerField()
+    stock = models.IntegerField()
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.PROTECT, null=True)
     category = models.ManyToManyField("Category", through="ProductCategory")
     image = models.ManyToManyField("ProductImage")

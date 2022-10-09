@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage, Customer
+from order.models import Order
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,4 +54,9 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-        # test
+class OrderSerializer(serializers.ModelSerializer):
+    customer = serializers.StringRelatedField() 
+
+    class Meta:
+        model = Order
+        fields = "__all__"
