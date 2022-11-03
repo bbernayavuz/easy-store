@@ -1,7 +1,8 @@
+from itertools import product
 from rest_framework import serializers
 
 from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage, Customer
-from order.models import Order
+from order.models import Order, OrderItem
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,9 +55,36 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
+class OrderItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = OrderItem
+        fields = "__all__"
+
+
 class OrderSerializer(serializers.ModelSerializer):
-    customer = serializers.StringRelatedField() 
+    orderitem_set=OrderItemSerializer(many=True)
 
     class Meta:
         model = Order
         fields = "__all__"
+
+    def create(self, validated_data):
+        # import pdb
+        # pdb.set_trace()
+        orderitem_validated_data = validated_data.pop('orderitem_set')
+        order = Order.objects.create(**validated_data)
+        orderitem_set_serializer = self.fields['orderitem_set']
+        for each in orderitem_validated_data:
+            each['order'] = order
+        orderitems = orderitem_set_serializer.create(orderitem_validated_data)
+        order.order_number = orderitems
+        return order
+
+    # def get_items(self, obj):
+    #     query = OrderItem.objects.filter(
+    #         order_id=obj.id)
+    #     serializer = OrderItemSerializer(query, many=True)
+
+    #     return serializer.data

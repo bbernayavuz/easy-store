@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from product.enums import Gender, UserType
 from phonenumber_field.modelfields import PhoneNumberField
-
+import itertools
 
 # from django.utils.timezone import datetime
 
@@ -24,7 +24,7 @@ class Manufacturer(models.Model):
 class Product(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=120)
-    slug = models.CharField(max_length=120, unique=True)
+    slug = models.CharField(max_length=120, unique=True, editable=False, blank=True)
     price = models.FloatField()
     stock = models.IntegerField()
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.PROTECT, null=True)
@@ -36,9 +36,22 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    # def save(self, *args, **kwargs):
+    #     self.slug = slugify(self.name) # name aynı olursa slugı değiştiren kod yazılacak, 
+    #                                 # şu an aynı name olunca hata veriyor.
+    #     super(Product, self).save(*args, **kwargs)
+
+
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Product, self).save(*args, **kwargs)
+        if not self.pk:
+            slug = slugify(self.name)
+
+            for n in itertools.count(1):
+                if not Product.objects.filter(slug=slug).exists():
+                    self.slug = slug
+                    break
+                slug = '{}-{}'.format(slugify(self.name), n + 1);
+        return super(Product, self).save( *args, **kwargs)
 
 
 class Category(models.Model):

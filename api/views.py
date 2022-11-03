@@ -2,6 +2,8 @@ from rest_framework import generics
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework import permissions
 from api.permissions import IsAdminUserOrReadOnly, IsOwnUserOrReadOnly
+from rest_framework import status
+from rest_framework.response import Response
 
 from api.serializers import (
     CategorySerializer,
@@ -38,6 +40,14 @@ class ProductViewSet(
     permission_classes = (IsAuthenticated,)
     filter_backends=[SearchFilter] # birden fazla seçenek eklenebilir
     search_fields=['name'] #product modelinden birden fazla seçenek eklenebilir
+
+ 
+    def retrieve(self, request, *args, **kwargs):
+        import pdb
+        pdb.set_trace()
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 
@@ -100,7 +110,7 @@ class CustomerViewSet(mixins.CreateModelMixin,
 
 
 
-class OrderViewSet( mixins.CreateModelMixin,
+class OrderViewSet(mixins.CreateModelMixin,
                     mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
                     mixins.ListModelMixin,
@@ -112,3 +122,13 @@ class OrderViewSet( mixins.CreateModelMixin,
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     filter_backends=[SearchFilter] # birden fazla seçenek eklenebilir
+
+
+    def post(self, request, *args, **kwargs):
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            order = serializer.save()
+            serializer = OrderSerializer(order)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
