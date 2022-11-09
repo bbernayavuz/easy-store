@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "product.apps.ProductConfig",
     "crispy_forms",
     "rest_framework",
-    "rest_framework.authtoken",
+    'rest_framework.authtoken',
     "dj_rest_auth",
     "django_extensions",  # shell plus için
     'django.contrib.sites',
@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    "order.apps.OrderConfig",
+
 ]
 
 SITE_ID = 1
@@ -140,7 +142,6 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-
 REST_FRAMEWORK = {
      # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -150,15 +151,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
     
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'authentication.SessionCsrfExemptAuthentication', # csrf zorunluluğunu kaldırıyoruz. 
-        # 'rest_framework.authentication.SessionAuthentication', 
+    'DEFAULT_AUTHENTICATION_CLASSES': (  
         'rest_framework.authentication.TokenAuthentication',
+        'authentication.SessionCsrfExemptAuthentication', # csrf zorunluluğunu kaldırıyoruz. 
+
+        # 'rest_framework.authentication.SessionAuthentication', 
         # 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAdminUser',
    ),
+   
 }
 
 

@@ -1,13 +1,15 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from product.api import views as api_views
+from api import views as api_views
 
 router = DefaultRouter()
 router.register(r'product', api_views.ProductViewSet)
 router.register(r'manufacturer', api_views.ManufacturerViewSet)
-router.register(r'category', api_views.CategoryAPIView)
-router.register(r'customer', api_views.CustomerAPIView, basename='customer')
+router.register(r'category', api_views.CategoryViewSet)
+router.register(r'customer', api_views.CustomerViewSet, basename='customer')
+router.register(r'order', api_views.OrderViewSet)
+
 
 
 urlpatterns = [
@@ -20,6 +22,6 @@ urlpatterns = [
     # path("manufacturer/<int:manufacturer_pk>", api_views.ManufacturerDetailAPIView.as_view(), name="manufacturer-detail"),
     # path("category/", api_views.CategoryListCreateAPIView.as_view(), name="category-list"),
     # path("category/<int:category_pk>", api_views.CategoryDetailAPIView.as_view(), name="category-detail"),
-    path("product-category/", api_views.ProductCategoryListCreateAPIView.as_view(), name="product-category-list"),
+   
 
 ]

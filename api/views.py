@@ -1,18 +1,21 @@
 from rest_framework import generics
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework import permissions
-from product.api.permissions import IsAdminUserOrReadOnly, IsOwnUserOrReadOnly
+from api.permissions import IsAdminUserOrReadOnly, IsOwnUserOrReadOnly
+from rest_framework import status
+from rest_framework.response import Response
 
-from product.api.serializers import (
+from api.serializers import (
     CategorySerializer,
     ImageSerializer,
     ManufacturerSerializer,
-    ProductCategorySerializer,
     ProductImageSerializer,
     ProductSerializer,
     CustomerSerializer,
+    OrderSerializer,
 )
-from product.models import Category, Customer, Manufacturer, Product, ProductCategory, ProductImage, Customer
+from product.models import Category, Customer, Manufacturer, Product, ProductImage, Customer
+from order.models import Order,OrderItem
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -37,6 +40,14 @@ class ProductViewSet(
     filter_backends=[SearchFilter] # birden fazla seçenek eklenebilir
     search_fields=['name'] #product modelinden birden fazla seçenek eklenebilir
 
+ 
+    def retrieve(self, request, *args, **kwargs):
+        # import pdb
+        # pdb.set_trace()
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
 
 
 class ProductImageCreateAPIView(generics.CreateAPIView):
@@ -59,7 +70,7 @@ class ManufacturerViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
 
-class CategoryAPIView(mixins.CreateModelMixin,
+class CategoryViewSet(mixins.CreateModelMixin,
                                 mixins.RetrieveModelMixin,
                                 mixins.UpdateModelMixin,
                                 mixins.ListModelMixin,
@@ -71,14 +82,14 @@ class CategoryAPIView(mixins.CreateModelMixin,
     permission_classes = (IsAuthenticated,)
 
 
-class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
-    queryset = ProductCategory.objects.all()
-    serializer_class = ProductCategorySerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+# class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
+#     queryset = ProductCategory.objects.all()
+#     serializer_class = ProductCategorySerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated,)
 
 
-class CustomerAPIView(mixins.CreateModelMixin,
+class CustomerViewSet(mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
                         mixins.ListModelMixin,
@@ -95,3 +106,28 @@ class CustomerAPIView(mixins.CreateModelMixin,
         if username is not None:
             queryset=queryset.filter(user__username=username)
         return queryset
+
+
+
+class OrderViewSet(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.ListModelMixin,
+                    GenericViewSet):
+
+    lookup_url_kwarg = "order_pk"
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    filter_backends=[SearchFilter] # birden fazla seçenek eklenebilir
+
+
+    def post(self, request, *args, **kwargs):
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            order = serializer.save()
+            serializer = OrderSerializer(order)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
