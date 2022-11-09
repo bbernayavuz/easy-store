@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "product.apps.ProductConfig",
     "crispy_forms",
     "rest_framework",
-    "rest_framework.authtoken",
+    'rest_framework.authtoken',
     "dj_rest_auth",
     "django_extensions",  # shell plus için
     'django.contrib.sites',
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
     "order.apps.OrderConfig",
+
 ]
 
 SITE_ID = 1
@@ -150,7 +151,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
     
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (  
         'rest_framework.authentication.TokenAuthentication',
         'authentication.SessionCsrfExemptAuthentication', # csrf zorunluluğunu kaldırıyoruz. 
 

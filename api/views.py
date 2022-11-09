@@ -9,13 +9,12 @@ from api.serializers import (
     CategorySerializer,
     ImageSerializer,
     ManufacturerSerializer,
-    ProductCategorySerializer,
     ProductImageSerializer,
     ProductSerializer,
     CustomerSerializer,
     OrderSerializer,
 )
-from product.models import Category, Customer, Manufacturer, Product, ProductCategory, ProductImage, Customer
+from product.models import Category, Customer, Manufacturer, Product, ProductImage, Customer
 from order.models import Order,OrderItem
 
 from rest_framework.authentication import TokenAuthentication
@@ -43,8 +42,8 @@ class ProductViewSet(
 
  
     def retrieve(self, request, *args, **kwargs):
-        import pdb
-        pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
@@ -83,11 +82,11 @@ class CategoryViewSet(mixins.CreateModelMixin,
     permission_classes = (IsAuthenticated,)
 
 
-class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
-    queryset = ProductCategory.objects.all()
-    serializer_class = ProductCategorySerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+# class ProductCategoryListCreateAPIView(generics.ListCreateAPIView):
+#     queryset = ProductCategory.objects.all()
+#     serializer_class = ProductCategorySerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated,)
 
 
 class CustomerViewSet(mixins.CreateModelMixin,

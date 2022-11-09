@@ -3,10 +3,10 @@ from statistics import mode
 from django.db import models
 from order.enums import Status
 from product.models import Customer, Product
+from order.utils import create_order_number
 
 
 class Order(models.Model):
-    id = models.BigAutoField(primary_key=True)
     order_number=models.CharField(max_length = 10, 
             blank=True,
             editable=False,
@@ -17,19 +17,23 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
-
+    def save(self, *args, **kwargs):
+        self.order_number = create_order_number()
+        return super(Order, self).save( *args, **kwargs)
+    
     def __str__(self):
         return self.order_number
 
+
+
  
 class OrderItem(models.Model):
-    id = models.BigAutoField(primary_key=True)
     order=models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     price=models.DecimalField(max_digits=5, decimal_places=2)
     quantity=models.IntegerField()
     shipped_date=models.DateTimeField(auto_now=True, null=True)
     delivered_date=models.DateTimeField(auto_now=True, null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
 
 
     def __str__(self):

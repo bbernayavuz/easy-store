@@ -1,7 +1,7 @@
 from itertools import product
 from rest_framework import serializers
 
-from product.models import Category, Manufacturer, Product, ProductCategory, ProductImage, Customer
+from product.models import Category, Manufacturer, Product, ProductImage, Customer
 from order.models import Order, OrderItem
 
 class ManufacturerSerializer(serializers.ModelSerializer):
@@ -31,23 +31,19 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     # manufacturer = ManufacturerSerializer(read_only=True, many=False) #cevapta manufacturer serializerdaki tüm bilgileri verir.
-    manufacturer = serializers.StringRelatedField() # cevapta manufacturer name'ini verir.
+    # manufacturer = serializers.StringRelatedField(read_only=False) # cevapta manufacturer name'ini verir.
                                                     # Manufacturer modelde dönen değeri verir  
                                                     # Ama product oluşturulurken yine manufacturer id verilmelidir.
     # manufacturer ile ilgili hiçbir şey yazılmazsa id döner.
-    category = CategorySerializer(read_only=True, many=True)
+    # category = CategorySerializer(many=True)
+
     image = ImageSerializer(read_only=True, many=True)
 
     class Meta:
         model = Product
         fields = "__all__"
-
-
-class ProductCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductCategory
-        fields = "__all__"
-
+        
+ 
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -79,7 +75,7 @@ class OrderSerializer(serializers.ModelSerializer):
         for each in orderitem_validated_data:
             each['order'] = order
         orderitems = orderitem_set_serializer.create(orderitem_validated_data)
-        order.order_number = orderitems
+
         return order
 
     # def get_items(self, obj):

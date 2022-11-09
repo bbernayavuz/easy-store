@@ -10,36 +10,33 @@ import itertools
 
 
 class Manufacturer(models.Model):
-    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=120)
-    slug = models.SlugField(max_length=120)
+    slug = models.CharField(max_length=120, unique=True, editable=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        return super(Manufacturer, self).save( *args, **kwargs)
+
 
 
 class Product(models.Model):
-    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=120)
     slug = models.CharField(max_length=120, unique=True, editable=False, blank=True)
     price = models.FloatField()
     stock = models.IntegerField()
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.PROTECT, null=True)
-    category = models.ManyToManyField("Category", through="ProductCategory")
+    category = models.ManyToManyField("Category")
     image = models.ManyToManyField("ProductImage")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
-
-    # def save(self, *args, **kwargs):
-    #     self.slug = slugify(self.name) # name aynı olursa slugı değiştiren kod yazılacak, 
-    #                                 # şu an aynı name olunca hata veriyor.
-    #     super(Product, self).save(*args, **kwargs)
 
 
     def save(self, *args, **kwargs):
@@ -55,38 +52,31 @@ class Product(models.Model):
 
 
 class Category(models.Model):
-    id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=120)
-    slug = models.CharField(max_length=120)
-    # created_at = models.DateTimeField(default=datetime.now())
+    slug = models.CharField(max_length=120, unique=True, editable=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.name
 
-
-
-class ProductCategory(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        return super(Category, self).save( *args, **kwargs)
 
 
 class ProductImage(models.Model):
-    image_id = models.BigAutoField(primary_key=True)
     # product = models.ForeignKey(Product, on_delete=models.CASCADE)
     source = models.CharField(max_length=255)
     extension = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.image_id
+        return self.id
 
 
 
 class Customer(models.Model):
-    id = models.BigAutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(max_length=255, choices=Gender.choices(),null=False, blank=True)
     phone_number = PhoneNumberField(null=True)
